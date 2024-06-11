@@ -1,22 +1,22 @@
 const { Schema, Types } = require('mongoose');
-const reactionSchema = require('./Reaction');
 
-const thoughtSchema = new Schema(
+const reactionSchema = new Schema(
   {
-    thoughtId: {
+    reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
     },
-    thoughtText: {
+    reactionBody: {
       type: String,
       required: true,
       maxlength: 280,
       minlength: 1,
-      default: 'Unnamed thought',
+      default: 'Unnamed reaction',
     },
     username: {
       type: String,
-      required: true
+      required: true,
+      maxlength: 250
     },
     reactions : [reactionSchema],
     createdAt: {

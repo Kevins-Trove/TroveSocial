@@ -4,17 +4,30 @@ const thoughtSchema = require('./Thought');
 // Schema to create Student model
 const userSchema = new Schema(
   {
-    first: {
+    username: {
       type: String,
       required: true,
-      max_length: 50,
+      unique: true,
+      trim: true
     },
-    last: {
+    email: {
       type: String,
       required: true,
-      max_length: 50,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
     thoughts: [thoughtSchema],
+    friends: [userSchema],
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    }
   },
   {
     toJSON: {
