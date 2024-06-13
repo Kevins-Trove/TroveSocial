@@ -8,7 +8,7 @@ const {
 } = require('../../controllers/thoughtController.js');
 
 // /api/Thought
-router.route('/').get(getThoughts).post(createThought);
+router.route('/').get(getThought).post(createThought);
 
 // /api/Thought/:thoughtId
 router

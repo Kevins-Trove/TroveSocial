@@ -19,7 +19,12 @@ const userSchema = new Schema(
       match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
     thoughts: [thoughtSchema],
-    friends: [userSchema],
+    friends: [
+      {
+        type:Schema.Types.ObjectId,
+        ref:"User"
+      }
+    ],
     createdAt: {
       type: Date,
       default: Date.now

@@ -18,7 +18,6 @@ const reactionSchema = new Schema(
       required: true,
       maxlength: 250
     },
-    reactions : [reactionSchema],
     createdAt: {
       type: Date,
       default: Date.now
@@ -32,8 +31,7 @@ const reactionSchema = new Schema(
     toJSON: {
       getters: true,
     },
-    id: false,
   }
 );
 
-module.exports = thoughtSchema;
+module.exports = reactionSchema;
