@@ -44,10 +44,12 @@ module.exports = {
   },
   // create a new user
   async createUser(req, res) {
+    console.log(req.body);
     try {
       const user = await User.create(req.body);
       res.json(user);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
