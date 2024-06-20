@@ -34,8 +34,7 @@ module.exports = {
       }
 
       res.json({
-        user,
-        grade: await grade(req.params.userId),
+        user
       });
     } catch (err) {
       console.log(err);
@@ -62,17 +61,7 @@ module.exports = {
         return res.status(404).json({ message: 'No such user exists' });
       }
 
-      const course = await Course.findOneAndUpdate(
-        { users: req.params.userId },
-        { $pull: { users: req.params.userId } },
-        { new: true }
-      );
-
-      if (!course) {
-        return res.status(404).json({
-          message: 'user deleted, but no courses found',
-        });
-      }
+      
 
       res.json({ message: 'user successfully deleted' });
     } catch (err) {
@@ -81,7 +70,7 @@ module.exports = {
     }
   },
 
-  // Add an assignment to a user
+  // Add an thought to a user
   async addThought(req, res) {
     console.log('You are adding an thought');
     console.log(req.body);
