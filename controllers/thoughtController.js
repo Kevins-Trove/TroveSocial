@@ -1,10 +1,26 @@
-const { Thought, User, Reaction } = require('../models');
+const { ObjectId } = require('mongoose').Types;
+const {  Thought } = require('../models');
 
 module.exports = {
   // Get all Thoughts
   async getThought(req, res) {
+    console.log("getThought");
+
     try {
-      const Thoughts = await Thought.find().populate('User');
+      const thoughts = await Thought.find();
+console.log("---------------");
+      const thoughtObj = {
+        thoughts
+      };
+
+      res.json(thoughtObj);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
+    
+    try {
+      const Thoughts = await Thought.find();
       res.json(Thoughts);
     } catch (err) {
       res.status(500).json(err);
@@ -12,9 +28,10 @@ module.exports = {
   },
   // Get a Thought
   async getSingleThought(req, res) {
+    console.log("getSingleThought");
     try {
-      const Thought = await Thought.findOne({ _id: req.params.ThoughtId })
-        .populate('User');
+      const Thought = await Thought.findOne({ _id: req.params.thoughtId })
+        ;
 
       if (!Thought) {
         return res.status(404).json({ message: 'No Thought with that ID' });
