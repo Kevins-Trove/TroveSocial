@@ -48,8 +48,8 @@ module.exports = {
         return res.status(404).json({ message: 'No such user exists' });
       }
 
-      await Thought.deleteMany({ _id: { $in: user.users } });
-      res.json({ message: 'User and thoughts deleted!' });
+      await Thought.deleteMany({ _id: { $in: user.thoughts } });
+      res.json(user);
 
       
     } catch (err) {
@@ -60,13 +60,13 @@ module.exports = {
 
   // Add an thought to a user
   async addThought(req, res) {
-    console.log('You are adding an thought');
-    console.log(req.body);
-
+    
     try {
+      const thought = await Thought.create(req.body);
+    
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { thought: req.body } },
+        { $addToSet: { thoughts: thought } },
         { runValidators: true, new: true }
       );
 
@@ -84,16 +84,26 @@ module.exports = {
   // Remove thought from a user
   async removeThought(req, res) {
     try {
+      const thought = await Thought.findOne({ _id: req.params.thoughtId });
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: 'No thought matches that ID' });
+      }
+
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { thought: { thoughtId: req.params.assignmentId } } },
+        { $pull: { thoughts: req.params.thoughtId } },
         { runValidators: true, new: true }
       );
+
+      const thoughtResult = await Thought.deleteOne({ _id: req.params.thoughtId });
 
       if (!user) {
         return res
           .status(404)
-          .json({ message: 'No user found with that ID :(' });
+          .json({ message: 'No user found with that ID' });
       }
 
       res.json(user);
@@ -103,16 +113,13 @@ module.exports = {
   },
    // Add an friend to a user
    async addFriend(req, res) {
-    console.log('You are adding an friend');
-    console.log(req.body);
-
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friend: req.body } },
+        { $addToSet: { friends: req.body } },
         { runValidators: true, new: true }
       );
-console.log(user);
+
       if (!user) {
         return res
           .status(404)
@@ -127,12 +134,13 @@ console.log(user);
   // Remove assignment from a user
   async removeFriend(req, res) {
     try {
+
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { friend: { friendId: req.params.userId } } },
+        { $pull: { friends:  req.params.friendId  } },
         { runValidators: true, new: true }
       );
-
+      //console.log(user);
       if (!user) {
         return res
           .status(404)

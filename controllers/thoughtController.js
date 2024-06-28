@@ -8,36 +8,24 @@ module.exports = {
 
     try {
       const thoughts = await Thought.find();
-console.log("---------------");
-      const thoughtObj = {
-        thoughts
-      };
-
-      res.json(thoughtObj);
+      res.json(thoughts);
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
-    
-    try {
-      const Thoughts = await Thought.find();
-      res.json(Thoughts);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+  
   },
   // Get a Thought
   async getSingleThought(req, res) {
     console.log("getSingleThought");
     try {
-      const Thought = await Thought.findOne({ _id: req.params.thoughtId })
-        ;
+      const thought = await Thought.findOne({ _id: req.params.thoughtId });
 
-      if (!Thought) {
+      if (!thought) {
         return res.status(404).json({ message: 'No Thought with that ID' });
       }
 
-      res.json(Thought);
+      res.json(thought);
     } catch (err) {
       res.status(500).json(err);
     }

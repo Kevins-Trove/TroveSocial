@@ -41,6 +41,16 @@ const userSchema = new Schema(
   }
 );
 
+// Create a virtual property `commentCount` that gets the amount of comments per post
+userSchema.virtual('thoughtCount').get(function () {
+  return this.thoughts.length;
+});
+
+// Create a virtual property `commentCount` that gets the amount of comments per post
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+});
+
 const User = model('user', userSchema);
 
 module.exports = User;
